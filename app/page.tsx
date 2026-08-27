@@ -244,7 +244,7 @@ const photosData: Array<{
   badge?: string;
 }> = [
   {
-    src: "/assets/img1.jpeg",
+    src: "https://i.pinimg.com/736x/cc/93/b0/cc93b01822e055b4a9e389e471ed61c0.jpg",
     type: "image",
     caption: "Our First Moments 💕",
     rotate: "-rotate-2",
@@ -255,19 +255,19 @@ const photosData: Array<{
     memory: "Our very first day walking together. We were still so shy, but I was so genuinely happy to talk and spend time with you. Truly one of my most cherished days! 🌸"
   },
   {
-    src: "/assets/video1.mp4",
-    type: "video",
+    src: "https://i.pinimg.com/736x/7e/38/dd/7e38dd154eba82dda1b7eeeec9d18e6e.jpg",
+    type: "image",
     caption: "So Adorable 🎬",
     rotate: "rotate-2",
     delay: "60ms",
     tall: true,
-    category: "video",
+    category: "sweet",
     date: "February 18, 2026",
     badge: "VIDEO MEMORY",
     memory: "A sweet random video of us laughing together that I will never get tired of replaying. Your smile in this video is truly irresistible! 🌷✨"
   },
   {
-    src: "/assets/img2.jpeg",
+    src: "https://i.pinimg.com/736x/29/7d/dd/297ddd97c75d65cf73f59ccec17f17c1.jpg",
     type: "image",
     caption: "Always Happy 🌸",
     rotate: "rotate-1",
@@ -278,7 +278,7 @@ const photosData: Array<{
     memory: "Your cute expressions whenever you listen to my random stories always melt my heart. Time flies so fast whenever we are laughing together like this! 🐾"
   },
   {
-    src: "/assets/img3.jpeg",
+    src: "https://i.pinimg.com/736x/e7/8d/41/e78d41c1c50121d70974064b40a7c368.jpg",
     type: "image",
     caption: "I Love You ❤️",
     rotate: "-rotate-1",
@@ -289,19 +289,19 @@ const photosData: Array<{
     memory: "I am endlessly grateful to have you in my life. You are truly my safest haven where I can always come home and share everything. Love you so much! 💕"
   },
   {
-    src: "/assets/video2.mp4",
-    type: "video",
+    src: "https://i.pinimg.com/736x/92/b5/2f/92b52f4e86e523438e3d79338909b567.jpg",
+    type: "image",
     caption: "Cute Vibes ✨",
     rotate: "-rotate-2",
     delay: "240ms",
     tall: false,
-    category: "video",
+    category: "sweet",
     date: "March 29, 2026",
     badge: "VIDEO MEMORY",
     memory: "A magical little moment enjoying our quiet time together. Every single second spent with you feels like pure bliss! 💖🎥"
   },
   {
-    src: "/assets/img4.jpeg",
+    src: "https://i.pinimg.com/736x/c8/f7/02/c8f702e12cbb53b550ca95eb28ab9024.jpg",
     type: "image",
     caption: "Sweet Memories ✨",
     rotate: "rotate-2",
@@ -312,7 +312,7 @@ const photosData: Array<{
     memory: "Every street in the city feels so much warmer and magical whenever I walk by your side. Everywhere we go becomes extraordinary because of you. 🌟"
   },
   {
-    src: "/assets/img5.jpeg",
+    src: "https://i.pinimg.com/1200x/0a/bd/36/0abd366c3ebbece97c4b4ce5aed8f749.jpg",
     type: "image",
     caption: "Together Always 💖",
     rotate: "-rotate-3",
@@ -323,7 +323,7 @@ const photosData: Array<{
     memory: "Whatever comes ahead in our journey, I want to walk through every chapter with you. Let's navigate every storm and rainbow together, my love! 🧸"
   },
   {
-    src: "/assets/img6.jpeg",
+    src: "https://i.pinimg.com/1200x/df/38/c8/df38c84b82d3feb0fb85aa8fbd34bcc0.jpg",
     type: "image",
     caption: "My Favourite Day 🌹",
     rotate: "rotate-1",
@@ -832,7 +832,7 @@ export default function Home() {
                   className="font-serif italic text-lg sm:text-xl md:text-2xl tracking-[0.2em] tracking-wide text-[#C6B3A2] animate-slide-up"
                   style={{ animationDelay: "260ms" }}
                 >
-                  Sayang
+                  Maeratul Helmiah
                 </h3>
               </div>
 
@@ -1151,11 +1151,6 @@ export default function Home() {
                                     autoPlay
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                   />
-                                  {/* Video Badge Overlay */}
-                                  <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-sm text-[#FFE5EC] px-2 py-0.5 rounded-full text-[10px] font-sans font-medium flex items-center gap-1 border border-white/20 shadow-sm z-10">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D6D] animate-ping" />
-                                    <span>VIDEO</span>
-                                  </div>
                                 </>
                               ) : (
                                 <img
@@ -1472,7 +1467,7 @@ export default function Home() {
                     animationDelay: "200ms",
                   }}
                 >
-                  Our Little Moments
+                  This song for you
                 </h2>
 
                 {/* Lace-framed YouTube embed */}
@@ -1543,17 +1538,17 @@ export default function Home() {
                       </g>
                     ))}
                   </svg>
-
-                  {/* Local video player */}
+                  {/* YouTube iframe */}
                   <div
                     className="relative"
                     style={{ width: "min(640px, 94vw)", aspectRatio: "16/9", padding: "clamp(10px,3vw,28px)", background: "rgba(30,15,10,0.6)" }}
                   >
-                    <video
-                      src="/assets/videomusic.mp4"
-                      controls
-                      playsInline
-                      className="w-full h-full rounded-sm object-cover"
+                    <iframe
+                      src="https://www.youtube.com/embed/4bwnO0FQp1s?autoplay=1&si=45SNSRlLO5PFvxAw"
+                      title="This song is for you"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full rounded-sm"
                       style={{ border: "none", display: "block" }}
                     />
                   </div>
@@ -1641,7 +1636,7 @@ export default function Home() {
                       {/* Photo */}
                       <div className="relative overflow-hidden rounded-[2px] bg-[#1A1010]" style={{ aspectRatio: "3/4" }}>
                         <img
-                          src="assets/about.jpeg"
+                          src="https://i.pinimg.com/1200x/df/38/c8/df38c84b82d3feb0fb85aa8fbd34bcc0.jpg"
                           alt="About You"
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
@@ -1804,19 +1799,19 @@ export default function Home() {
                     {/* Letter Content */}
                     <div className="text-[#EAD5C3] font-serif text-left h-full flex flex-col justify-between pt-1">
                       <p className="select-text pr-10 sm:pr-14 pl-1 sm:pl-2 pt-1 text-[11px] sm:text-[13px] md:text-[14px] leading-[1.65] sm:leading-[1.75] font-normal tracking-wide text-[#F5EDE0] overflow-y-auto max-h-[145px] sm:max-h-[200px] letter-scrollbar">
-                        {"Happy birthday to the most special girl in my life ❤️🎂 I hope today brings you so much happiness, because you genuinely deserve all the good things in this world. I’m really grateful that I get to know you, care about you, and be part of your life. You’re someone who makes my days better just by being there, and honestly, having you in my life is something I’ll always be thankful for."}
+                        {"Selamat ulang tahun untuk perempuan paling spesial dalam hidupku ❤️🎂 Semoga hari ini membawa banyak kebahagiaan untukmu, karena kamu benar-benar pantas mendapatkan semua hal baik di dunia ini. Aku sangat bersyukur bisa mengenalmu, menyayangimu, dan menjadi bagian dari hidupmu. Kamu adalah seseorang yang bisa membuat hari-hariku menjadi lebih baik hanya dengan kehadiranmu, dan jujur, memiliki kamu dalam hidupku adalah sesuatu yang akan selalu aku syukuri."}
                         <br /><br />
 
-                        {"On your special day, I just want you to know how much you mean to me. I may not always know the perfect words to say it, and sometimes I might not show it in the best way, but please know that I really do care about you so much. I appreciate every little thing about you — your kindness, your personality, the way you talk, the way you make me smile, and even all those little things you probably don’t realize I notice."}
+                        {"Di hari spesialmu ini, aku hanya ingin kamu tahu betapa berartinya kamu untukku. Mungkin aku tidak selalu tahu kata-kata yang tepat untuk mengungkapkannya, dan terkadang aku juga tidak bisa menunjukkannya dengan cara yang terbaik, tapi percayalah, aku benar-benar sangat peduli kepadamu. Aku menghargai setiap hal kecil tentang dirimu — kebaikanmu, kepribadianmu, caramu berbicara, caramu membuatku tersenyum, bahkan hal-hal kecil yang mungkin tidak kamu sadari bahwa aku perhatikan."}
                         <br /><br />
 
-                        {"I hope this new chapter of your life brings you closer to all your dreams. I hope you succeed in everything you work hard for, and whenever things get difficult, I hope you remember how strong and capable you are. Don’t ever doubt yourself, okay? You deserve to be proud of yourself and everything you’ve achieved so far. I’ll always be cheering for you and wishing the best for you. 🫶🏻"}
+                        {"Semoga di babak baru dalam hidupmu ini, kamu semakin dekat dengan semua impianmu. Semoga kamu berhasil dalam segala hal yang kamu perjuangkan dengan sungguh-sungguh, dan ketika keadaan terasa sulit, semoga kamu selalu ingat betapa kuat dan hebatnya dirimu. Jangan pernah meragukan dirimu sendiri, ya? Kamu pantas bangga pada dirimu sendiri dan semua hal yang sudah berhasil kamu capai sampai sekarang. Aku akan selalu mendukungmu dan mendoakan yang terbaik untukmu. 🫶🏻"}
                         <br /><br />
 
-                        {"Thank you for all the memories, all the laughs, all the conversations, and all the little moments that have made my life happier. I hope we can continue making many more beautiful memories together. No matter how much time passes, I hope you’ll always remember that your birthday is a special day because it’s the day someone as amazing as you came into this world."}
+                        {"Terima kasih untuk semua kenangan, tawa, percakapan, dan setiap momen kecil yang telah membuat hidupku menjadi lebih bahagia. Aku berharap kita bisa terus membuat banyak kenangan indah bersama. Seberapa pun waktu berlalu, aku harap kamu akan selalu mengingat bahwa hari ulang tahunmu adalah hari yang spesial, karena pada hari itulah seseorang yang luar biasa seperti kamu hadir ke dunia ini."}
                         <br /><br />
 
-                        {"Once again, happy birthday, sayang ❤️ I hope you have the happiest birthday ever. May you always be surrounded by people who genuinely love and appreciate you, may your heart always be filled with happiness, and may all your wishes slowly become reality. Enjoy your day, smile a lot, eat your favourite food, and most importantly, remember that you are very, very special to me. Happy birthday, my girl. ❤️🎂🥳"}
+                        {"Sekali lagi, selamat ulang tahun, Maeratul Helmiah ❤️ Semoga kamu mendapatkan ulang tahun yang paling bahagia. Semoga kamu selalu dikelilingi oleh orang-orang yang benar-benar menyayangi dan menghargaimu, semoga hatimu selalu dipenuhi kebahagiaan, dan semoga semua keinginanmu perlahan menjadi kenyataan. Nikmati harimu, banyak-banyak tersenyum, makan makanan favoritmu, dan yang paling penting, ingatlah bahwa kamu sangat, sangat spesial untukku. Selamat ulang tahun, Maeratul Helmiah. ❤️🎂🥳"}
                       </p>
 
                       {/* Postmark stamp */}
@@ -1868,9 +1863,9 @@ export default function Home() {
                   <div className="animate-sway-fast hover:scale-105 hover:rotate-0 transition-transform duration-300">
                     <PhotoStrip
                       photos={[
-                        "assets/img4.jpeg",
-                        "assets/img5.jpeg",
-                        "assets/img6.jpeg"
+                        "assets/img11.jpeg",
+                        "assets/img9.jpeg",
+                        "assets/img10.jpeg"
                       ]}
                       bgStyle={{
                         backgroundColor: "#201618",
