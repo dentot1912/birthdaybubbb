@@ -106,20 +106,20 @@ function getStampPath(width: number, height: number, r = 4, spacing = 12) {
     d += ` H ${x - r} A ${r} ${r} 0 0 0 ${x + r} ${r}`;
   }
   d += ` H ${width - r * 2} A ${r * 2} ${r * 2} 0 0 1 ${width} ${r * 2}`;
-  
+
   const rows = Math.floor((height - r * 4) / spacing);
   for (let i = 0; i <= rows; i++) {
     const y = r * 2 + i * spacing + spacing / 2;
     d += ` V ${y - r} A ${r} ${r} 0 0 0 ${width} ${y + r}`;
   }
   d += ` V ${height - r * 2} A ${r * 2} ${r * 2} 0 0 1 ${width - r * 2} ${height}`;
-  
+
   for (let i = cols; i >= 0; i--) {
     const x = r * 2 + i * spacing + spacing / 2;
     d += ` H ${x + r} A ${r} ${r} 0 0 0 ${x - r} ${height}`;
   }
   d += ` H ${r * 2} A ${r * 2} ${r * 2} 0 0 1 0 ${height - r * 2}`;
-  
+
   for (let i = rows; i >= 0; i--) {
     const y = r * 2 + i * spacing + spacing / 2;
     d += ` V ${y + r} A ${r} ${r} 0 0 0 0 ${y - r}`;
@@ -147,7 +147,7 @@ function PhotoStrip({ photos, bgStyle, rotateClass }: { photos: string[]; bgStyl
           <div key={idx} className="w-1.5 h-2.5 bg-[#080808] rounded-[1px] opacity-90" />
         ))}
       </div>
-      
+
       {/* Film sprocket holes right */}
       <div className="absolute right-[3px] top-0 bottom-0 flex flex-col justify-between py-3 pointer-events-none z-30">
         {Array.from({ length: 9 }).map((_, idx) => (
@@ -163,9 +163,6 @@ function PhotoStrip({ photos, bgStyle, rotateClass }: { photos: string[]; bgStyl
             className="w-full h-full object-cover"
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25">
-            <span className="text-xl text-[#EAD5C3] select-none">📷</span>
-          </div>
         </div>
       ))}
     </div>
@@ -234,11 +231,115 @@ const slides = [
   }
 ];
 
+const photosData: Array<{
+  src: string;
+  type?: "image" | "video";
+  caption: string;
+  rotate: string;
+  delay: string;
+  tall?: boolean;
+  category: string;
+  date: string;
+  memory: string;
+  badge?: string;
+}> = [
+  {
+    src: "/assets/img1.jpeg",
+    type: "image",
+    caption: "Our First Moments 💕",
+    rotate: "-rotate-2",
+    delay: "0ms",
+    tall: false,
+    category: "sweet",
+    date: "January 12, 2026",
+    memory: "Our very first day walking together. We were still so shy, but I was so genuinely happy to talk and spend time with you. Truly one of my most cherished days! 🌸"
+  },
+  {
+    src: "/assets/video1.mp4",
+    type: "video",
+    caption: "So Adorable 🎬",
+    rotate: "rotate-2",
+    delay: "60ms",
+    tall: true,
+    category: "video",
+    date: "February 18, 2026",
+    badge: "VIDEO MEMORY",
+    memory: "A sweet random video of us laughing together that I will never get tired of replaying. Your smile in this video is truly irresistible! 🌷✨"
+  },
+  {
+    src: "/assets/img2.jpeg",
+    type: "image",
+    caption: "Always Happy 🌸",
+    rotate: "rotate-1",
+    delay: "120ms",
+    tall: true,
+    category: "silly",
+    date: "February 28, 2026",
+    memory: "Your cute expressions whenever you listen to my random stories always melt my heart. Time flies so fast whenever we are laughing together like this! 🐾"
+  },
+  {
+    src: "/assets/img3.jpeg",
+    type: "image",
+    caption: "I Love You ❤️",
+    rotate: "-rotate-1",
+    delay: "180ms",
+    tall: false,
+    category: "sweet",
+    date: "March 14, 2026",
+    memory: "I am endlessly grateful to have you in my life. You are truly my safest haven where I can always come home and share everything. Love you so much! 💕"
+  },
+  {
+    src: "/assets/video2.mp4",
+    type: "video",
+    caption: "Cute Vibes ✨",
+    rotate: "-rotate-2",
+    delay: "240ms",
+    tall: false,
+    category: "video",
+    date: "March 29, 2026",
+    badge: "VIDEO MEMORY",
+    memory: "A magical little moment enjoying our quiet time together. Every single second spent with you feels like pure bliss! 💖🎥"
+  },
+  {
+    src: "/assets/img4.jpeg",
+    type: "image",
+    caption: "Sweet Memories ✨",
+    rotate: "rotate-2",
+    delay: "300ms",
+    tall: true,
+    category: "sweet",
+    date: "April 05, 2026",
+    memory: "Every street in the city feels so much warmer and magical whenever I walk by your side. Everywhere we go becomes extraordinary because of you. 🌟"
+  },
+  {
+    src: "/assets/img5.jpeg",
+    type: "image",
+    caption: "Together Always 💖",
+    rotate: "-rotate-3",
+    delay: "360ms",
+    tall: false,
+    category: "sweet",
+    date: "May 19, 2026",
+    memory: "Whatever comes ahead in our journey, I want to walk through every chapter with you. Let's navigate every storm and rainbow together, my love! 🧸"
+  },
+  {
+    src: "/assets/img6.jpeg",
+    type: "image",
+    caption: "My Favourite Day 🌹",
+    rotate: "rotate-1",
+    delay: "420ms",
+    tall: true,
+    category: "sweet",
+    date: "June 08, 2026",
+    memory: "Captured on such a bright and beautiful day. The gentle breeze and your sweet radiant smile made this day one of my all-time favourites! 🐱"
+  },
+];
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("happy-birthday");
   const [tabTransitioning, setTabTransitioning] = useState<boolean>(false);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  
+
   const dragStartX = useRef<number | null>(null);
   const dragEndX = useRef<number | null>(null);
   const minSwipeDistance = 50;
@@ -329,6 +430,12 @@ export default function Home() {
   const [isEnvelopeOpened, setIsEnvelopeOpened] = useState<boolean>(false);
   const [aboutYouHearts, setAboutYouHearts] = useState<{ id: number; x: number; y: number; emoji: string; size: number }[]>([]);
 
+  // States for 'The' Tab Cute Redesign
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
+  const [activePhotoFilter, setActivePhotoFilter] = useState<string>("all");
+  const [likedPhotos, setLikedPhotos] = useState<Record<number, boolean>>({});
+  const [lightboxHearts, setLightboxHearts] = useState<{ id: number; x: number; y: number; emoji: string; size: number }[]>([]);
+
   const spawnAboutYouHeart = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -364,7 +471,64 @@ export default function Home() {
         gain.connect(audioCtxRef.current.destination);
         osc.start(time);
         osc.stop(time + 0.6);
-      } catch (err) {}
+      } catch (err) { }
+    }
+  };
+
+  const spawnLightboxHeart = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>, index: number) => {
+    e.stopPropagation();
+
+    // Toggle liked state
+    setLikedPhotos(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+
+    // If it's becoming liked, spawn cute emojis!
+    if (!likedPhotos[index]) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top;
+
+      const emojisList = ["🧸", "🎀", "🐱", "🌸", "💖", "✨", "🍭", "🐾", "🍧", "🐰"];
+      const newHearts = Array.from({ length: 15 }).map((_, idx) => ({
+        id: Date.now() + Math.random() + idx,
+        x: x + (Math.random() - 0.5) * 50,
+        y: y - 10 - Math.random() * 20,
+        emoji: emojisList[Math.floor(Math.random() * emojisList.length)],
+        size: Math.floor(Math.random() * 18) + 18,
+      }));
+
+      setLightboxHearts((prev) => [...prev, ...newHearts]);
+
+      newHearts.forEach((h) => {
+        setTimeout(() => {
+          setLightboxHearts((prev) => prev.filter((item) => item.id !== h.id));
+        }, 1600);
+      });
+
+      // Play soft rising chime chord!
+      if (audioCtxRef.current) {
+        try {
+          const ctx = audioCtxRef.current;
+          const time = ctx.currentTime;
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (Arpeggio)
+          notes.forEach((freq, i) => {
+            const noteTime = time + i * 0.08;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, noteTime);
+            gain.gain.setValueAtTime(0, noteTime);
+            gain.gain.linearRampToValueAtTime(0.015, noteTime + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 0.4);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(noteTime);
+            osc.stop(noteTime + 0.4);
+          });
+        } catch (err) { }
+      }
     }
   };
 
@@ -619,8 +783,8 @@ export default function Home() {
               key={item.id}
               onClick={() => switchTab(item.id)}
               className={`transition-all duration-300 hover:text-white relative pb-1 cursor-pointer ${activeTab === item.id
-                  ? "font-bold text-[#EAD5C3]"
-                  : "text-[#EAD5C3]/60 font-medium"
+                ? "font-bold text-[#EAD5C3]"
+                : "text-[#EAD5C3]/60 font-medium"
                 }`}
             >
               {item.label}
@@ -668,7 +832,7 @@ export default function Home() {
                   className="font-serif italic text-lg sm:text-xl md:text-2xl tracking-[0.2em] tracking-wide text-[#C6B3A2] animate-slide-up"
                   style={{ animationDelay: "260ms" }}
                 >
-                  Eduh
+                  Sayang
                 </h3>
               </div>
 
@@ -781,9 +945,9 @@ export default function Home() {
               {/* Four Lace Hearts Row — clickable, navigates to tabs */}
               <div className="flex flex-wrap gap-3 sm:gap-6 md:gap-10 items-end justify-center z-10 px-4">
                 {[
-                  { tab: "the",     label: "The",     delay: "220ms" },
-                  { tab: "love",    label: "Love",    delay: "300ms" },
-                  { tab: "of",      label: "of",      delay: "380ms" },
+                  { tab: "the", label: "The", delay: "220ms" },
+                  { tab: "love", label: "Love", delay: "300ms" },
+                  { tab: "of", label: "of", delay: "380ms" },
                   { tab: "my-life", label: "My life", delay: "460ms" },
                 ].map((item, i) => (
                   <button
@@ -828,9 +992,9 @@ export default function Home() {
 
                         {/* Cropped head image inside the heart */}
                         <image
-                          href="/assets/icon.jpeg"
-                          x="-20"
-                          y="-55"
+                          href="https://png.pngtree.com/png-clipart/20220626/original/pngtree-pink-cute-cat-icon-animal-png-yuri-png-image_8188672.png"
+                          x="-35"
+                          y="-125"
                           width="240"
                           height="427"
                           clipPath={`url(#heart-clip-${i})`}
@@ -917,117 +1081,325 @@ export default function Home() {
             <div
               className="fixed inset-0 z-50 overflow-y-auto"
               style={{
-                background: "radial-gradient(ellipse at 30% 20%, #1A0A0A 0%, #0D0D0D 40%, #080808 100%)",
+                background: "radial-gradient(circle at center, #1E1218 0%, #0E090C 100%)",
               }}
             >
-              {/* Ambient floating hearts */}
-              <div className="pointer-events-none fixed inset-0 overflow-hidden z-0" aria-hidden>
-                {["❤️","💕","🌹","✨","💖","🌸","💗","✦"].map((em, i) => (
-                  <span
-                    key={i}
-                    className="absolute text-lg select-none animate-pulse"
-                    style={{
-                      left: `${8 + i * 12}%`,
-                      top: `${10 + (i % 3) * 28}%`,
-                      opacity: 0.08 + (i % 4) * 0.04,
-                      fontSize: `${14 + (i % 3) * 8}px`,
-                      animation: `float-heart ${4 + i}s ease-in-out infinite alternate`,
-                      animationDelay: `${i * 0.6}s`,
-                    }}
-                  >
-                    {em}
-                  </span>
-                ))}
+              {/* Soft pink ambient glows */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] rounded-full opacity-[0.06] blur-[90px]" style={{ background: "radial-gradient(circle, #FFA6C9 0%, transparent 70%)" }} />
+                <div className="absolute bottom-[10%] left-[5%] w-[50vw] h-[50vw] rounded-full opacity-[0.04] blur-[110px]" style={{ background: "radial-gradient(circle, #F8AD9D 0%, transparent 70%)" }} />
               </div>
 
               {/* Header */}
-              <div className="relative z-10 pt-10 pb-4 px-6 text-center animate-fade-in">
+              <div className="relative z-10 pt-10 pb-2 px-6 text-center animate-fade-in">
                 <h2
-                  className="font-script text-4xl sm:text-5xl md:text-6xl"
+                  className="font-script text-4xl sm:text-5xl md:text-6xl text-[#EAD5C3]"
                   style={{
-                    color: "#EAD5C3",
-                    textShadow: "0 2px 20px rgba(234,213,195,0.3)",
+                    textShadow: "0 2px 20px rgba(255,179,198,0.4)",
                   }}
                 >
-                  Foto Kamuu
+                  Captured Moments of Us
                 </h2>
                 <div className="mt-3 flex items-center justify-center gap-3">
                   <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#EAD5C3]/40" />
-                  <span className="text-[#EAD5C3]/40 text-xs">✦</span>
+                  <span className="text-[#EAD5C3]/40 text-xs">🌸</span>
                   <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#EAD5C3]/40" />
                 </div>
               </div>
 
-              {/* Photo grid — scattered Polaroid-style */}
-              <div className="relative z-10 px-4 sm:px-8 pb-28 pt-4">
-                <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto">
-                  {[
-                    { src: "assets/foto1.jpeg", caption: "Moment kita 💕", rotate: "-rotate-2", delay: "0ms", tall: false },
-                    { src: "assets/foto2.jpeg", caption: "Selalu happy 🌸", rotate: "rotate-1", delay: "60ms", tall: true },
-                    { src: "assets/foto3.jpeg", caption: "Aku sayang kamu ❤️", rotate: "-rotate-1", delay: "120ms", tall: false },
-                    { src: "assets/foto4.jpeg", caption: "Kenangan indah ✨", rotate: "rotate-2", delay: "180ms", tall: true },
-                    { src: "assets/foto5.jpeg", caption: "Together always 💖", rotate: "-rotate-3", delay: "240ms", tall: false },
-                    { src: "assets/foto6.jpeg", caption: "My favourite day 🌹", rotate: "rotate-1", delay: "300ms", tall: true },
-                    { src: "assets/foto7.jpeg", caption: "So beautiful 💗", rotate: "rotate-2", delay: "360ms", all: false },
-                    { src: "assets/foto8.jpeg", caption: "Kamu segalanya 🌟", rotate: "-rotate-1", delay: "420ms", tall: false },
-                  ].map((p, i) => (
-                    <div
-                      key={i}
-                      className={`break-inside-avoid mb-3 sm:mb-4 group ${p.rotate} hover:rotate-0 transition-all duration-500 hover:scale-[1.04] hover:z-20 relative`}
-                      style={{
-                        animation: `slideUpFade 0.6s ease-out ${p.delay} both`,
-                        transformOrigin: "center center",
-                      }}
-                    >
-                      {/* Polaroid frame */}
-                      <div
-                        className="rounded-sm shadow-[0_8px_30px_rgba(0,0,0,0.55)] border border-white/10"
-                        style={{
-                          background: "linear-gradient(160deg, #FDFBF7 0%, #F0EAE2 100%)",
-                          padding: "8px 8px 36px 8px",
-                        }}
-                      >
-                        {/* Photo area */}
+              {/* Photo & Video grid — scattered Polaroid-style with video cards */}
+              <div className="relative z-10 px-4 sm:px-8 pb-28 pt-6">
+                <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 sm:gap-5 space-y-4 sm:space-y-5 max-w-5xl mx-auto">
+                  {photosData
+                    .filter((p) => activePhotoFilter === "all" || p.category === activePhotoFilter)
+                    .map((p) => {
+                      const originalIndex = photosData.findIndex((item) => item.src === p.src);
+                      const isVideo = p.type === "video";
+                      return (
                         <div
-                          className={`relative w-full overflow-hidden rounded-[2px] bg-[#111111] ${p.tall ? "aspect-[3/4]" : "aspect-[4/3]"}`}
+                          key={originalIndex}
+                          className={`break-inside-avoid mb-4 group ${p.rotate} hover:rotate-0 transition-all duration-500 hover:scale-[1.04] hover:z-20 cursor-pointer relative`}
+                          style={{
+                            animation: `slideUpFade 0.6s ease-out ${p.delay} both`,
+                            transformOrigin: "center center",
+                          }}
                         >
-                          <img
-                            src={p.src}
-                            alt={p.caption}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          {/* Polaroid frame */}
+                          <div
+                            className={`rounded-xl shadow-[0_8px_35px_rgba(0,0,0,0.55)] border p-3 pb-7 transition-all duration-300 group-hover:shadow-[0_15px_45px_rgba(255,198,255,0.25)] ${
+                              isVideo
+                                ? "border-[#FF85A1]/40 group-hover:border-[#FF85A1]"
+                                : "border-[#FFC6FF]/20 group-hover:border-[#FFC6FF]/50"
+                            }`}
                             style={{
-                              objectPosition: i === 0 ? "center top" : "center",
-                              transform: i === 5 ? "scale(1.5)" : undefined,
+                              background: isVideo
+                                ? "linear-gradient(160deg, #FFF5F8 0%, #FFEBF2 100%)"
+                                : "linear-gradient(160deg, #FFF9FB 0%, #FFF0F5 100%)",
                             }}
-                            onError={(e) => {
-                              const el = e.target as HTMLImageElement;
-                              el.style.display = "none";
+                          >
+                            {/* Media area */}
+                            <div
+                              className={`relative w-full overflow-hidden rounded-lg bg-[#111111] ${p.tall ? "aspect-[3/4]" : "aspect-[4/3]"}`}
+                            >
+                              {isVideo ? (
+                                <>
+                                  <video
+                                    src={p.src}
+                                    muted
+                                    loop
+                                    playsInline
+                                    autoPlay
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                  />
+                                  {/* Video Badge Overlay */}
+                                  <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-sm text-[#FFE5EC] px-2 py-0.5 rounded-full text-[10px] font-sans font-medium flex items-center gap-1 border border-white/20 shadow-sm z-10">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D6D] animate-ping" />
+                                    <span>VIDEO</span>
+                                  </div>
+                                </>
+                              ) : (
+                                <img
+                                  src={p.src}
+                                  alt={p.caption}
+                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                  style={{
+                                    objectPosition: originalIndex === 0 ? "center top" : "center",
+                                  }}
+                                  onError={(e) => {
+                                    const el = e.target as HTMLImageElement;
+                                    el.style.display = "none";
+                                  }}
+                                />
+                              )}
+                              {/* Subtle gloss overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-lg" />
+                            </div>
+
+                          </div>
+
+                          {/* Tape decoration on top — alternating cute styles */}
+                          <div
+                            className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-12 h-5 rounded-[2px] opacity-80 pointer-events-none transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-0.5 shadow-sm z-20"
+                            style={{
+                              backgroundImage: originalIndex % 3 === 0
+                                ? "repeating-linear-gradient(45deg, #FFC6FF, #FFC6FF 4px, #FFF 4px, #FFF 8px)"
+                                : originalIndex % 3 === 1
+                                  ? "radial-gradient(#FFF 25%, transparent 25%)"
+                                  : "linear-gradient(to right, #FFADAD, #FFD6A5)",
+                              backgroundColor: originalIndex % 3 === 1 ? "#FDFFB6" : undefined,
+                              backgroundSize: originalIndex % 3 === 1 ? "6px 6px" : undefined,
+                              transform: `translateX(-50%) rotate(${originalIndex % 3 === 0 ? -6 : originalIndex % 3 === 1 ? 4 : -2}deg)`,
                             }}
                           />
-                          {/* Subtle gloss overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-[2px]" />
                         </div>
-                      </div>
-
-                      {/* Tape decoration on top — alternating */}
-                      <div
-                        className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-5 rounded-sm opacity-60 pointer-events-none"
-                        style={{
-                          background: i % 2 === 0
-                            ? "rgba(234,213,195,0.55)"
-                            : "rgba(220,180,180,0.45)",
-                          transform: `translateX(-50%) rotate(${i % 3 === 0 ? -8 : i % 3 === 1 ? 4 : -2}deg)`,
-                        }}
-                      />
-                    </div>
-                  ))}
+                      );
+                    })}
                 </div>
               </div>
 
               {/* Back button */}
               <button
                 onClick={() => switchTab("to")}
-                className="fixed bottom-7 left-1/2 -translate-x-1/2 px-8 py-3 rounded-full border border-[#EAD5C3]/50 text-[#EAD5C3]/80 hover:border-[#EAD5C3] hover:text-[#EAD5C3] hover:bg-[#EAD5C3]/10 transition-all duration-300 cursor-pointer flex items-center gap-2 z-30 animate-slide-up backdrop-blur-sm"
+                className="fixed bottom-7 left-1/2 -translate-x-1/2 px-8 py-3 rounded-full border border-[#FFC6FF]/50 text-[#FFC6FF]/80 hover:border-[#FFC6FF] hover:text-[#FFC6FF] hover:bg-[#FFC6FF]/10 transition-all duration-300 cursor-pointer flex items-center gap-2 z-30 animate-slide-up backdrop-blur-sm"
+                style={{ animationDelay: "700ms" }}
+              >
+                <span className="text-xl">←</span>
+              </button>
+
+              {/* Polaroid & Video Lightbox Modal */}
+              {selectedPhotoIndex !== null && (() => {
+                const p = photosData[selectedPhotoIndex];
+                const isLiked = !!likedPhotos[selectedPhotoIndex];
+                const isVideo = p.type === "video";
+
+                const handleNext = (e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  setSelectedPhotoIndex((selectedPhotoIndex + 1) % photosData.length);
+                };
+
+                const handlePrev = (e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  setSelectedPhotoIndex((selectedPhotoIndex - 1 + photosData.length) % photosData.length);
+                };
+
+                return (
+                  <div
+                    className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md animate-fade-in"
+                    onClick={() => setSelectedPhotoIndex(null)}
+                  >
+                    {/* Floating cute elements container (inside modal portal) */}
+                    <div className="fixed inset-0 pointer-events-none z-[110] overflow-hidden">
+                      {lightboxHearts.map((h) => (
+                        <span
+                          key={h.id}
+                          className="absolute select-none pointer-events-none z-[110]"
+                          style={{
+                            left: h.x,
+                            top: h.y,
+                            fontSize: `${h.size}px`,
+                            animation: "float-up-fade 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+                          }}
+                        >
+                          {h.emoji}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Close Button */}
+                    <button
+                      onClick={() => setSelectedPhotoIndex(null)}
+                      className="absolute top-5 right-5 w-12 h-12 rounded-full flex items-center justify-center bg-black/50 text-[#FFC6FF]/80 hover:text-white hover:bg-black/80 transition-all duration-300 border border-[#FFC6FF]/20 cursor-pointer z-50"
+                      aria-label="Close lightbox"
+                    >
+                      <span className="text-2xl font-light">×</span>
+                    </button>
+
+                    {/* Left navigation arrow - bow shape */}
+                    <button
+                      onClick={handlePrev}
+                      className="absolute left-3 sm:left-6 w-12 h-12 rounded-full flex items-center justify-center bg-black/40 text-[#FFC6FF]/80 hover:text-white hover:bg-black/70 hover:scale-105 transition-all duration-300 border border-[#FFC6FF]/10 cursor-pointer z-40"
+                      aria-label="Previous item"
+                    >
+                      <span className="text-xl">🎀 ←</span>
+                    </button>
+
+                    {/* Right navigation arrow - bow shape */}
+                    <button
+                      onClick={handleNext}
+                      className="absolute right-3 sm:right-6 w-12 h-12 rounded-full flex items-center justify-center bg-black/40 text-[#FFC6FF]/80 hover:text-white hover:bg-black/70 hover:scale-105 transition-all duration-300 border border-[#FFC6FF]/10 cursor-pointer z-40"
+                      aria-label="Next item"
+                    >
+                      <span className="text-xl">→ 🎀</span>
+                    </button>
+
+                    {/* Modal Container */}
+                    <div
+                      className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 w-full max-w-4xl max-h-[85vh] overflow-y-auto md:overflow-visible bg-transparent z-30 p-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {/* Left Column: Polaroid / Video Card */}
+                      <div className="relative group shrink-0 animate-scale-up duration-500">
+                        {/* Custom Washi tape strip */}
+                        <div
+                          className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-14 h-6 rounded-sm z-20 pointer-events-none opacity-90 shadow-sm"
+                          style={{
+                            backgroundImage: "repeating-linear-gradient(45deg, #FFC6FF, #FFC6FF 4px, #FFF 4px, #FFF 8px)",
+                            transform: "translateX(-50%) rotate(-4deg)",
+                          }}
+                        />
+
+                        {/* Polaroid Body */}
+                        <div
+                          className="bg-[#FFF9FB] rounded-xl p-4 pb-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-2 border-[#FFC6FF]/30 flex flex-col items-center animate-sway-slow"
+                          style={{
+                            width: "clamp(280px, 72vw, 340px)",
+                          }}
+                        >
+                          {/* Image/Video Area */}
+                          <div className={`relative w-full overflow-hidden rounded-lg bg-[#111111] ${isVideo ? "aspect-[9/16] max-h-[380px]" : "aspect-[3/4]"}`}>
+                            {isVideo ? (
+                              <video
+                                src={p.src}
+                                controls
+                                autoPlay
+                                playsInline
+                                className="w-full h-full object-contain bg-black"
+                              />
+                            ) : (
+                              <>
+                                <img
+                                  src={p.src}
+                                  alt={p.caption}
+                                  className="w-full h-full object-cover"
+                                  style={{
+                                    objectPosition: selectedPhotoIndex === 0 ? "center top" : "center",
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-lg" />
+                              </>
+                            )}
+                          </div>
+
+                          {/* Handwritten Caption */}
+                          <div className="mt-4 text-center">
+                            <span className="font-script text-[#5C2E3C] text-2xl font-bold tracking-wide">
+                              {p.caption}
+                            </span>
+                            {isVideo && (
+                              <div className="mt-1 flex items-center justify-center gap-1.5 text-xs text-[#FF4D6D] font-serif">
+                                <span>🎥 Video Kenangan</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column: Cute Diary Envelope Letter */}
+                      <div
+                        className="w-full max-w-sm flex flex-col bg-[#FFF9FB] rounded-2xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-2 border-[#FFC6FF] relative text-[#5C2E3C] animate-scale-up"
+                        style={{
+                          animationDelay: "150ms",
+                          backgroundImage: "radial-gradient(#FFE5EC 10%, transparent 10%)",
+                          backgroundSize: "16px 16px"
+                        }}
+                      >
+                        {/* Pink scallop decoration top */}
+                        <div className="absolute top-2 left-4 right-4 flex justify-between pointer-events-none opacity-50 text-xs">
+                          <span>🌸</span>
+                          <span>{isVideo ? "🎬" : "🎀"}</span>
+                          <span>🌸</span>
+                        </div>
+
+                        {/* Stamp or flower deco in top right corner */}
+                        <div className="absolute top-6 right-6 text-3xl opacity-60 select-none pointer-events-none font-serif animate-pulse">
+                          {isVideo ? "🎞️" : "🧸"}
+                        </div>
+
+                        {/* Date */}
+                        <div className="font-serif italic text-xs tracking-wider text-[#9C5A6C] mb-2 font-semibold">
+                          🐾 {p.date}
+                        </div>
+
+                        {/* Heading */}
+                        <h3 className="font-script text-2xl font-bold tracking-wide border-b border-[#FFC6FF] pb-2 mb-4 text-[#8C3A5C]">
+                          {isVideo ? "Momen Video Kita 🎬" : "Cerita Gemes Kita"}
+                        </h3>
+
+                        {/* Memory Content */}
+                        <div className="flex-1 font-script text-xl sm:text-2xl leading-relaxed mb-6 select-text whitespace-pre-line tracking-wide text-[#5C2E3C]">
+                          {p.memory}
+                        </div>
+
+                        {/* Love / Interactive Heart Button */}
+                        <div className="flex justify-between items-center border-t border-[#FFC6FF] pt-4 mt-auto">
+                          <span className="font-serif italic text-[11px] text-[#9C5A6C]">
+                            kamu kesayangan aku... 🐰
+                          </span>
+                          <button
+                            onClick={(e) => spawnLightboxHeart(e, selectedPhotoIndex)}
+                            className={`group px-4 py-2 rounded-full border-2 flex items-center gap-2 cursor-pointer transition-all duration-300 ${isLiked
+                                ? "bg-[#FFE5EC] border-[#FF85A1] text-[#A30026] font-bold scale-105"
+                                : "bg-transparent border-[#FFC6FF] text-[#9C5A6C] hover:border-[#FF85A1] hover:text-[#FF85A1] hover:bg-[#FFE5EC]/20"
+                              }`}
+                          >
+                            <span className={`text-lg transition-transform duration-300 group-hover:scale-125 ${isLiked ? "scale-110 animate-pulse text-[#FF85A1]" : ""}`}>
+                              💝
+                            </span>
+                            <span className="font-serif text-xs tracking-wider uppercase font-semibold">
+                              {isLiked ? "Loved!" : "Suka"}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Back button */}
+              <button
+                onClick={() => switchTab("to")}
+                className="fixed bottom-7 left-1/2 -translate-x-1/2 px-8 py-3 rounded-full border border-[#FFC6FF]/50 text-[#FFC6FF]/80 hover:border-[#FFC6FF] hover:text-[#FFC6FF] hover:bg-[#FFC6FF]/10 transition-all duration-300 cursor-pointer flex items-center gap-2 z-30 animate-slide-up backdrop-blur-sm"
                 style={{ animationDelay: "700ms" }}
               >
                 <span className="text-xl">←</span>
@@ -1100,7 +1472,7 @@ export default function Home() {
                     animationDelay: "200ms",
                   }}
                 >
-                  This song is for you
+                  Our Little Moments
                 </h2>
 
                 {/* Lace-framed YouTube embed */}
@@ -1172,17 +1544,16 @@ export default function Home() {
                     ))}
                   </svg>
 
-                  {/* YouTube iframe */}
+                  {/* Local video player */}
                   <div
                     className="relative"
                     style={{ width: "min(640px, 94vw)", aspectRatio: "16/9", padding: "clamp(10px,3vw,28px)", background: "rgba(30,15,10,0.6)" }}
                   >
-                    <iframe
-                      src="https://www.youtube.com/embed/pjhOjHDX0A8?si=WmYi1Jgh3oHEynL9"
-                      title="This song is for you"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full rounded-sm"
+                    <video
+                      src="/assets/videomusic.mp4"
+                      controls
+                      playsInline
+                      className="w-full h-full rounded-sm object-cover"
                       style={{ border: "none", display: "block" }}
                     />
                   </div>
@@ -1199,22 +1570,23 @@ export default function Home() {
               </button>
             </div>
           )}
-          {/* OF TAB: "About You" — Redesigned Vintage Scrapbook Pinboard */}
+          {/* OF TAB: "About You" — Dreamy Botanical Garden */}
           {activeTab === "of" && (
 
             <div
               onClick={spawnAboutYouHeart}
               className="fixed inset-0 z-50 overflow-y-auto select-none cursor-pointer"
               style={{
-                background: "radial-gradient(circle at center, #2C1A1A 0%, #150A0A 100%)",
-                backgroundImage: `
-                  radial-gradient(circle at 50% 30%, rgba(78, 24, 24, 0.45) 0%, rgba(21, 10, 10, 0.95) 75%),
-                  repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 0, 0, 0.15) 1px, rgba(0, 0, 0, 0.15) 2px),
-                  repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0, 0, 0, 0.15) 1px, rgba(0, 0, 0, 0.15) 2px)
-                `,
-                backgroundSize: "auto, 16px 16px, 16px 16px"
+                background: "radial-gradient(ellipse at 40% 30%, #1A0A0A 0%, #0D0D0D 40%, #080808 100%)",
               }}
             >
+              {/* Soft floating ambient background glows */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute -top-[10%] -right-[10%] w-[55vw] h-[55vw] rounded-full opacity-[0.06] blur-[100px]" style={{ background: "radial-gradient(circle, #E8A0B8 0%, transparent 70%)" }} />
+                <div className="absolute top-[40%] -left-[15%] w-[50vw] h-[50vw] rounded-full opacity-[0.04] blur-[110px]" style={{ background: "radial-gradient(circle, #C4B5FD 0%, transparent 70%)" }} />
+                <div className="absolute -bottom-[10%] right-[20%] w-[45vw] h-[45vw] rounded-full opacity-[0.04] blur-[90px]" style={{ background: "radial-gradient(circle, #FDBA74 0%, transparent 70%)" }} />
+              </div>
+
               {/* Interactive Hearts Overlay */}
               <div className="absolute inset-0 pointer-events-none z-40 overflow-hidden">
                 {aboutYouHearts.map((heart) => (
@@ -1234,261 +1606,67 @@ export default function Home() {
               </div>
 
               {/* Page Container */}
-              <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 gap-8">
-                
+              <div className="relative z-10 min-h-screen flex flex-col items-center px-5 sm:px-8 py-14 sm:py-20 gap-10 sm:gap-14">
+
                 {/* Header */}
                 <div className="text-center animate-slide-down" style={{ animationDelay: "100ms" }}>
-                  <h2
-                    className="font-script text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-transparent bg-gradient-to-b from-[#FFF2E6] via-[#EAD5C3] to-[#C89B9B] bg-clip-text filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]"
-                  >
-                    About You
+                  <p className="text-[11px] sm:text-xs tracking-[0.3em] uppercase font-sans text-[#EAD5C3]/50 font-medium mb-3">
+                    things i adore about
+                  </p>
+                  <h2 className="font-script text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-transparent bg-gradient-to-b from-[#FFF2E6] via-[#EAD5C3] to-[#C89B9B] bg-clip-text" style={{ filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.4))" }}>
+                    You
                   </h2>
-                  <div className="mt-4 flex items-center justify-center gap-3">
-                    <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-[#EAD5C3]/40" />
-                    <span className="text-[#D4AF37] text-xs font-serif">❦</span>
-                    <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-[#EAD5C3]/40" />
+                  <div className="mt-5 flex items-center justify-center gap-4">
+                    <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#EAD5C3]/30" />
+                    <span className="text-[#EAD5C3]/50 text-sm">✿</span>
+                    <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#EAD5C3]/30" />
                   </div>
-                  <p className="text-[10px] text-[#EAD5C3]/25 mt-2 italic font-serif">
-                    (tap anywhere to scatter love petals)
+                  <p className="text-[10px] text-[#EAD5C3]/25 mt-3 italic font-serif">
+                    tap anywhere for a little surprise ♡
                   </p>
                 </div>
 
-                {/* Scrapbook Board Grid Layout */}
-                <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-6 px-2">
+                {/* Central Photo — Polaroid with washi tape */}
+                <div className="animate-scale-up" style={{ animationDelay: "200ms" }}>
+                  <div className="relative group mx-auto">
+                    {/* Washi tape strips */}
+                    <div className="absolute -top-3 left-[15%] w-16 h-5 rounded-sm z-20 pointer-events-none opacity-40 rotate-[-8deg]"
+                      style={{ background: "repeating-linear-gradient(135deg, #C6878F 0px, #C6878F 4px, #A06070 4px, #A06070 8px)" }} />
+                    <div className="absolute -top-2.5 right-[12%] w-14 h-5 rounded-sm z-20 pointer-events-none opacity-35 rotate-[6deg]"
+                      style={{ background: "repeating-linear-gradient(45deg, #9B8EC4 0px, #9B8EC4 4px, #7B6EA0 4px, #7B6EA0 8px)" }} />
 
-                  {/* LEFT COLUMN: 4 Letters pinned to board */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 w-full lg:w-[32%] justify-items-center lg:justify-items-end">
-                    {[
-                      { 
-                        title: "Sweet Smile", 
-                        text: "Senyummu yang selalu bikin hari-hariku jadi jauh lebih cerah 🌸", 
-                        rotate: "rotate-[-2deg]", 
-                        bg: "linear-gradient(to bottom, #FAF6EE 0%, #F3E6CE 100%)",
-                        border: "rgba(184, 134, 11, 0.35)", 
-                        num: "Ⅰ",
-                        delay: "200ms"
-                      },
-                      { 
-                        title: "Laugh & Joy", 
-                        text: "Caramu ketawa yang bikin aku ikut bahagia tiap saat 😄", 
-                        rotate: "rotate-[3deg]", 
-                        bg: "linear-gradient(to bottom, #FFF3F5 0%, #F5D6DA 100%)",
-                        border: "rgba(192, 138, 147, 0.4)", 
-                        num: "Ⅱ",
-                        delay: "300ms"
-                      },
-                      { 
-                        title: "Sincere Heart", 
-                        text: "Ketulusanmu dalam setiap hal kecil yang kamu lakukan ❤️", 
-                        rotate: "rotate-[-1deg]", 
-                        bg: "linear-gradient(to bottom, #FAF6EE 0%, #F3E6CE 100%)",
-                        border: "rgba(184, 134, 11, 0.35)", 
-                        num: "Ⅲ",
-                        delay: "400ms"
-                      },
-                      { 
-                        title: "Deep Care", 
-                        text: "Cara kamu perhatiin aku padahal kamu sendiri lagi capek 🥺", 
-                        rotate: "rotate-[2deg]", 
-                        bg: "linear-gradient(to bottom, #EBF3F5 0%, #D0E4E8 100%)",
-                        border: "rgba(123, 146, 166, 0.4)", 
-                        num: "Ⅳ",
-                        delay: "500ms"
-                      }
-                    ].map((card, i) => (
-                      <div
-                        key={i}
-                        className={`w-full max-w-[270px] aspect-[4/3] relative rounded-md shadow-[0_12px_28px_rgba(0,0,0,0.5)] border border-[#FFF]/10 transition-all duration-500 hover:scale-[1.06] hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.65)] hover:z-30 cursor-pointer ${card.rotate} animate-scale-up`}
-                        style={{
-                          background: card.bg,
-                          animationDelay: card.delay,
-                        }}
-                      >
-                        {/* Brass Thumbtack with shadow */}
-                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 z-20">
-                          {/* Tack shadow */}
-                          <div className="absolute top-2.5 left-1 w-2.5 h-1.5 bg-black/45 blur-[0.6px] rounded-full transform rotate-12" />
-                          {/* Tack head */}
-                          <div className="w-full h-full rounded-full bg-gradient-to-br from-[#FFD700] via-[#C5A029] to-[#8B7500] border border-[#B8860B]/70 shadow-sm" />
-                          {/* Tack center pin shine */}
-                          <div className="absolute top-1 left-1.5 w-1 h-1 rounded-full bg-white/45" />
-                        </div>
-
-                        {/* Card Internal Layout */}
-                        <div className="w-full h-full p-4 flex flex-col justify-between" style={{ borderColor: card.border }}>
-                          {/* Letterhead */}
-                          <div className="flex justify-between items-center border-b border-black/10 pb-1.5">
-                            <span className="font-script text-[#7A5B4C] text-[15px] tracking-wide font-semibold">
-                              {card.title}
-                            </span>
-                            <span className="font-serif text-[#7A5B4C]/45 text-[10px] tracking-widest font-bold">
-                              {card.num}
-                            </span>
-                          </div>
-
-                          {/* Message Body */}
-                          <div className="flex-1 flex items-center justify-center py-2">
-                            <p className="font-serif text-[#1A1A1A]/90 text-xs sm:text-[13px] leading-relaxed text-center italic select-text">
-                              &ldquo;{card.text}&rdquo;
-                            </p>
-                          </div>
-
-                          {/* Signature line */}
-                          <div className="text-right text-[8px] font-sans tracking-widest text-[#7A5B4C]/40 uppercase font-semibold">
-                            with love ❦
-                          </div>
-                        </div>
+                    {/* Polaroid card */}
+                    <div className="bg-[#FDFBF7] rounded-sm p-3 pb-14 shadow-[0_12px_40px_rgba(0,0,0,0.5),0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] group-hover:scale-[1.02] group-hover:rotate-[1deg]"
+                      style={{ width: "clamp(220px, 50vw, 280px)" }}>
+                      {/* Photo */}
+                      <div className="relative overflow-hidden rounded-[2px] bg-[#1A1010]" style={{ aspectRatio: "3/4" }}>
+                        <img
+                          src="assets/about.jpeg"
+                          alt="About You"
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                        {/* Soft vignette */}
+                        <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.15)] pointer-events-none" />
                       </div>
-                    ))}
-                  </div>
-
-                  {/* CENTER PHOTO: Ornate Baroque Gold Exhibition Frame */}
-                  <div className="shrink-0 flex flex-col items-center gap-5 z-20 my-4 lg:my-0">
-                    <div className="relative group">
-
-                      {/* Heavy Gold Exhibition Frame Container */}
-                      <div
-                        className="relative shadow-[0_30px_75px_rgba(0,0,0,0.85)] border-[8px] double border-gradient transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:rotate-[1deg] group-hover:shadow-[0_35px_90px_rgba(212,175,85,0.18)]"
-                        style={{
-                          background: "linear-gradient(135deg, #1C0A0A 0%, #0F0505 100%)",
-                          padding: "16px 16px 20px 16px",
-                          width: "clamp(220px, 46vw, 260px)",
-                          borderRadius: "2px",
-                        }}
-                      >
-
-                        {/* Image Frame */}
-                        <div
-                          className="relative overflow-hidden bg-[#2A1818] border-2 border-[#1A0A0A] shadow-[inset_0_4px_12px_rgba(0,0,0,0.7)]"
-                          style={{ aspectRatio: "3/4", borderRadius: "1px" }}
-                        >
-                          <img
-                            src="/assets/foto9.jpeg"
-                            alt="About You"
-                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
-                            }}
-                          />
-                          {/* Shadows inside */}
-                          <div className="absolute inset-0 shadow-[inset_0_2px_8px_rgba(0,0,0,0.5)] pointer-events-none" />
-                          
-                          {/* Film Shine Sweep */}
-                          <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 pointer-events-none opacity-60 group-hover:translate-x-full transition-transform duration-1000 ease-out" />
-                        </div>
-
-                        {/* Bottom Label under photo (Exhibition plaque style) */}
-                        <div className="mt-4 border-t border-[#D4AF37]/25 pt-2.5 text-center flex flex-col gap-0.5 select-none">
-                          <span className="font-script text-[#EAD5C3] text-lg md:text-xl tracking-wide">
-                            my person 💕
-                          </span>
-                        </div>
+                      {/* Handwritten label */}
+                      <div className="absolute bottom-3 left-0 right-0 text-center">
+                        <span className="font-script text-[#5B3A4A] text-xl sm:text-2xl tracking-wide">
+                          my person 💕
+                        </span>
                       </div>
                     </div>
-
-                    {/* Small Decorative Hanging Chain loops at the top */}
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex gap-12 pointer-events-none z-10 select-none">
-                      <div className="w-1.5 h-6 border-l border-r border-[#C5A029]/35" />
-                      <div className="w-1.5 h-6 border-l border-r border-[#C5A029]/35" />
-                    </div>
                   </div>
-
-                  {/* RIGHT COLUMN: 4 Letters pinned to board */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 w-full lg:w-[32%] justify-items-center lg:justify-items-start">
-                    {[
-                      { 
-                        title: "Soft Voice", 
-                        text: "Suaramu yang selalu bikin tenang meski apapun terjadi 🎵", 
-                        rotate: "rotate-[2deg]", 
-                        bg: "linear-gradient(to bottom, #FFF3F5 0%, #F5D6DA 100%)",
-                        border: "rgba(192, 138, 147, 0.4)", 
-                        num: "Ⅴ",
-                        delay: "350ms"
-                      },
-                      { 
-                        title: "Vibrant Energy", 
-                        text: "Semangat kamu yang nular ke aku setiap kali kita ngobrol ✨", 
-                        rotate: "rotate-[-3deg]", 
-                        bg: "linear-gradient(to bottom, #FAF6EE 0%, #F3E6CE 100%)",
-                        border: "rgba(184, 134, 11, 0.35)", 
-                        num: "Ⅵ",
-                        delay: "450ms"
-                      },
-                      { 
-                        title: "Quiet Expressions", 
-                        text: "Cara kamu diem tapi ekspresimu ngomong banyak hal 🥰", 
-                        rotate: "rotate-[1deg]", 
-                        bg: "linear-gradient(to bottom, #FFF3F5 0%, #F5D6DA 100%)",
-                        border: "rgba(192, 138, 147, 0.4)", 
-                        num: "Ⅶ",
-                        delay: "550ms"
-                      },
-                      { 
-                        title: "Perfect You", 
-                        text: "Dan hal terfavorit — kamu itu, kamu yang apa adanya 💖", 
-                        rotate: "rotate-[-2deg]", 
-                        bg: "linear-gradient(to bottom, #FAF6EE 0%, #F3E6CE 100%)",
-                        border: "rgba(184, 134, 11, 0.35)", 
-                        num: "Ⅷ",
-                        delay: "650ms"
-                      }
-                    ].map((card, i) => (
-                      <div
-                        key={i}
-                        className={`w-full max-w-[270px] aspect-[4/3] relative rounded-md shadow-[0_12px_28px_rgba(0,0,0,0.5)] border border-[#FFF]/10 transition-all duration-500 hover:scale-[1.06] hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.65)] hover:z-30 cursor-pointer ${card.rotate} animate-scale-up`}
-                        style={{
-                          background: card.bg,
-                          animationDelay: card.delay,
-                        }}
-                      >
-                        {/* Brass Thumbtack with shadow */}
-                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 z-20">
-                          {/* Tack shadow */}
-                          <div className="absolute top-2.5 left-1 w-2.5 h-1.5 bg-black/45 blur-[0.6px] rounded-full transform rotate-12" />
-                          {/* Tack head */}
-                          <div className="w-full h-full rounded-full bg-gradient-to-br from-[#FFD700] via-[#C5A029] to-[#8B7500] border border-[#B8860B]/70 shadow-sm" />
-                          {/* Tack center pin shine */}
-                          <div className="absolute top-1 left-1.5 w-1 h-1 rounded-full bg-white/45" />
-                        </div>
-
-                        {/* Card Internal Layout */}
-                        <div className="w-full h-full p-4 flex flex-col justify-between" style={{ borderColor: card.border }}>
-                          {/* Letterhead */}
-                          <div className="flex justify-between items-center border-b border-black/10 pb-1.5">
-                            <span className="font-script text-[#7A5B4C] text-[15px] tracking-wide font-semibold">
-                              {card.title}
-                            </span>
-                            <span className="font-serif text-[#7A5B4C]/45 text-[10px] tracking-widest font-bold">
-                              {card.num}
-                            </span>
-                          </div>
-
-                          {/* Message Body */}
-                          <div className="flex-1 flex items-center justify-center py-2">
-                            <p className="font-serif text-[#1A1A1A]/90 text-xs sm:text-[13px] leading-relaxed text-center italic select-text">
-                              &ldquo;{card.text}&rdquo;
-                            </p>
-                          </div>
-
-                          {/* Signature line */}
-                          <div className="text-right text-[8px] font-sans tracking-widest text-[#7A5B4C]/40 uppercase font-semibold">
-                            with love ❦
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
                 </div>
 
                 {/* Back Button */}
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent spawning a heart
+                    e.stopPropagation();
                     switchTab("to");
                   }}
-                  className="mt-6 px-8 py-3 rounded-full border border-[#EAD5C3]/40 text-[#EAD5C3]/75 hover:border-[#EAD5C3] hover:text-[#EAD5C3] hover:bg-[#EAD5C3]/15 transition-all duration-300 cursor-pointer flex items-center gap-2 animate-slide-up backdrop-blur-md z-30 shadow-md"
-                  style={{ animationDelay: "700ms" }}
+                  className="mt-4 px-8 py-3 rounded-full border border-[#EAD5C3]/30 text-[#EAD5C3]/60 hover:border-[#EAD5C3]/70 hover:text-[#EAD5C3] hover:bg-[#EAD5C3]/10 transition-all duration-300 cursor-pointer flex items-center gap-2 animate-slide-up backdrop-blur-sm z-30"
+                  style={{ animationDelay: "900ms" }}
                 >
                   <span className="text-xl">←</span>
                 </button>
@@ -1496,59 +1674,46 @@ export default function Home() {
             </div>
           )}
 
-
-
           {/* MY LIFE TAB: "My life" — Letter and Photo filmstrips */}
           {activeTab === "my-life" && (
-            <div className="fixed inset-0 z-50 overflow-hidden flex bg-[#080808]">
-              
-              {/* Vertical Gingham Plaid Panel on the Left */}
-              <div
-                className="absolute left-0 top-0 bottom-0 w-[35%] hidden md:block z-10"
-                style={{
-                  backgroundColor: "#181818",
-                  backgroundImage: `
-                    linear-gradient(90deg, rgba(245, 237, 224, 0.85) 50%, transparent 50%),
-                    linear-gradient(rgba(245, 237, 224, 0.85) 50%, transparent 50%)
-                  `,
-                  backgroundSize: "12px 12px",
-                }}
-              />
+            <div className="fixed inset-0 z-50 overflow-hidden flex bg-[#080808]" style={{ background: "radial-gradient(circle at center, #140E12 0%, #080608 100%)" }}>
 
-              {/* Decorative Flowers behind Photo Strips (Right Side) */}
-              <div className="absolute inset-0 -z-10 pointer-events-none select-none opacity-40 md:opacity-50">
-                {/* Dark Lily Flower under/behind strips */}
-                <div className="absolute top-[40%] right-[15%] w-44 sm:w-56 h-44 sm:h-56">
-                  <svg viewBox="0 0 200 200" className="w-full h-full transform rotate-[25deg]">
-                    <path d="M100 100 Q60 50, 40 40 T20 60 Q30 90, 100 100" fill="#2E0A0A" />
-                    <path d="M100 100 Q80 40, 90 20 T120 30 Q130 60, 100 100" fill="#3B0D0D" />
-                    <path d="M100 100 Q120 50, 150 40 T170 70 Q140 90, 100 100" fill="#2E0A0A" />
-                    <path d="M100 100 Q130 90, 160 110 T150 140 Q110 130, 100 100" fill="#3B0D0D" />
-                    <path d="M100 100 Q90 140, 90 170 T60 160 Q50 120, 100 100" fill="#2E0A0A" />
-                    <path d="M100 100 Q50 110, 30 130 T40 150 Q70 140, 100 100" fill="#3B0D0D" />
-                  </svg>
-                </div>
+              {/* Local styles for smooth sway animations */}
+              <style>{`
+                @keyframes sway-slow {
+                  0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+                  50% { transform: rotate(1.5deg) translateY(-4px); }
+                }
+                @keyframes sway-fast {
+                  0%, 100% { transform: rotate(2deg) translateY(0); }
+                  50% { transform: rotate(-2deg) translateY(-6px); }
+                }
+                .animate-sway-slow {
+                  animation: sway-slow 4.5s ease-in-out infinite;
+                }
+                .animate-sway-fast {
+                  animation: sway-fast 5.5s ease-in-out infinite;
+                }
+              `}</style>
 
-                {/* Stems/Twigs with purple flowers */}
-                <svg viewBox="0 0 1000 600" className="absolute inset-0 w-full h-full" fill="none">
-                  <path d="M 450 120 Q 550 180, 520 280 T 580 450" stroke="#080808" strokeWidth="1.5" />
-                  <circle cx="530" cy="200" r="3.5" fill="#6E5568" />
-                  <circle cx="560" cy="300" r="3.5" fill="#6E5568" />
-                  <circle cx="570" cy="370" r="3" fill="#6E5568" />
-                </svg>
+              {/* Soft floating ambient background glows */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-[20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#EAD5C3] opacity-[0.03] blur-[120px]" />
+                <div className="absolute bottom-[10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-[#C6B3A2] opacity-[0.03] blur-[130px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vw] rounded-full bg-[#8A7068] opacity-[0.02] blur-[100px]" />
               </div>
 
               {/* Main Content Layout */}
-              <div className="absolute inset-0 z-20 flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-12 md:gap-16 px-4 sm:px-6 pt-28 pb-20 md:py-12 overflow-y-auto">
-                
+              <div className="absolute inset-0 z-20 flex flex-col md:flex-row items-center justify-center gap-12 sm:gap-16 md:gap-24 px-6 pt-24 pb-20 overflow-y-auto">
+
                 {/* Left Side: Interactive Envelope, Doily, and Postage Letter */}
                 <div className="relative flex items-center justify-center w-full max-w-[360px] sm:max-w-[380px] h-[280px] sm:h-[340px] mt-6 md:mt-0">
-                  
+
                   {/* Envelope Base Container */}
-                  <div className={`relative w-[260px] sm:w-[310px] h-[200px] sm:h-[250px] transition-all duration-700 ${isEnvelopeOpened ? "translate-y-24 scale-95" : "hover:-translate-y-1 hover:rotate-1 cursor-pointer"}`}>
-                    
+                  <div className={`relative w-[280px] sm:w-[330px] h-[215px] sm:h-[260px] transition-all duration-700 ${isEnvelopeOpened ? "translate-y-24 scale-90 opacity-60 pointer-events-none" : "hover:-translate-y-2 hover:scale-102 cursor-pointer"}`}>
+
                     {/* SVG Envelope */}
-                    <svg viewBox="0 0 300 240" className="w-full h-full drop-shadow-lg text-[#EADCC9]" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 300 240" className="w-full h-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)] text-[#E2D5C5]" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       {/* Back Panel */}
                       <path d="M 10 90 L 10 230 L 290 230 L 290 90 L 150 150 Z" fill="#D3C1AD" />
 
@@ -1558,11 +1723,11 @@ export default function Home() {
                       ) : (
                         <path d="M 10 90 L 150 170 L 290 90 Z" fill="#C4B29E" className="transition-all duration-700 origin-top" />
                       )}
-                      
+
                       {/* Side fold overlays */}
                       <path d="M 10 90 L 120 160 L 10 230 Z" fill="#DFCEBA" />
                       <path d="M 290 90 L 180 160 L 290 230 Z" fill="#DFCEBA" />
-                      
+
                       {/* Bottom fold overlay */}
                       <path d="M 10 230 L 150 135 L 290 230 Z" fill="#D8C7B3" />
                     </svg>
@@ -1572,7 +1737,7 @@ export default function Home() {
                       <button
                         onClick={() => {
                           setIsEnvelopeOpened(true);
-                          
+
                           // Play chime progression
                           if (audioCtxRef.current) {
                             const time = audioCtxRef.current.currentTime;
@@ -1595,10 +1760,16 @@ export default function Home() {
                             osc2.stop(time + 0.6);
                           }
                         }}
-                        className="absolute top-[125px] left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#B03A2E] hover:bg-[#C0392B] border-2 border-[#EAD5C3] shadow-md flex items-center justify-center text-white text-lg font-bold transition-all duration-300 hover:scale-110 cursor-pointer animate-pulse z-30"
+                        className="absolute top-[120px] sm:top-[145px] left-1/2 -translate-x-1/2 w-14 h-14 z-30 transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] active:scale-95 group"
                         title="Click to Open Letter"
                       >
-                        ❤️
+                        {/* Realistic 3D Wax Seal */}
+                        <div
+                          className="absolute inset-0 bg-gradient-to-br from-[#A93226] via-[#7B241C] to-[#4A1511] border border-[#B03A2E]/50 shadow-[inset_0_2px_4px_rgba(255,255,255,0.25)] animate-pulse"
+                          style={{ borderRadius: "42% 56% 48% 45%" }}
+                        />
+                        {/* Wax seal heart emblem */}
+                        <span className="relative z-10 text-white text-xl filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] group-hover:scale-110 transition-transform duration-300">❤️</span>
                       </button>
                     )}
                   </div>
@@ -1625,40 +1796,40 @@ export default function Home() {
                   <div className={`absolute w-[290px] sm:w-[385px] h-[200px] sm:h-[270px] transition-all duration-700 ease-out flex flex-col justify-between p-4 sm:p-6 ${isEnvelopeOpened ? "-translate-y-[80px] sm:-translate-y-[100px] scale-[1.06] sm:scale-[1.08] md:scale-[1.12] rotate-0 opacity-100 z-25" : "translate-y-[30px] scale-50 opacity-0 z-0 pointer-events-none"}`}>
                     {/* Scalloped background */}
                     <div className="absolute inset-0 -z-10 select-none pointer-events-none">
-                      <svg viewBox="0 0 385 270" className="w-full h-full drop-shadow-xl text-[#FDFBF8] fill-current">
-                        <path d={getStampPath(385, 270, 4, 12)} />
+                      <svg viewBox="0 0 385 270" className="w-full h-full drop-shadow-[0_20px_45px_rgba(0,0,0,0.7)] text-[#1C1619] fill-current">
+                        <path d={getStampPath(385, 270, 4, 12)} stroke="#EAD5C3" strokeWidth="0.8" strokeOpacity="0.2" />
                       </svg>
                     </div>
 
                     {/* Letter Content */}
-                    <div className="text-[#111111] font-script text-left h-full flex flex-col justify-between pt-1">
-                      <p className="select-text pr-10 sm:pr-14 pl-1 sm:pl-2 pt-1 text-[12px] sm:text-[15px] md:text-[16.5px] leading-[1.35] sm:leading-[1.4] md:leading-[1.55] overflow-y-auto max-h-[145px] sm:max-h-[200px] letter-scrollbar">
-                        {"Happy birthday my loovee-11 💗"}
+                    <div className="text-[#EAD5C3] font-serif text-left h-full flex flex-col justify-between pt-1">
+                      <p className="select-text pr-10 sm:pr-14 pl-1 sm:pl-2 pt-1 text-[11px] sm:text-[13px] md:text-[14px] leading-[1.65] sm:leading-[1.75] font-normal tracking-wide text-[#F5EDE0] overflow-y-auto max-h-[145px] sm:max-h-[200px] letter-scrollbar">
+                        {"Happy birthday to the most special girl in my life ❤️🎂 I hope today brings you so much happiness, because you genuinely deserve all the good things in this world. I’m really grateful that I get to know you, care about you, and be part of your life. You’re someone who makes my days better just by being there, and honestly, having you in my life is something I’ll always be thankful for."}
                         <br /><br />
-                        {"It's your special dayy. Wish you all the best yaa. Eduhh maafff yaaa kalau sampai sekarang akuuu belum bisaa kasih hal yang wow buat kamuuu. Maafff juga kalau akuuu masii banyak kurangnyaa dan belum jadi yang terbaik. But trust me, I always try my best for u."}
+
+                        {"On your special day, I just want you to know how much you mean to me. I may not always know the perfect words to say it, and sometimes I might not show it in the best way, but please know that I really do care about you so much. I appreciate every little thing about you — your kindness, your personality, the way you talk, the way you make me smile, and even all those little things you probably don’t realize I notice."}
                         <br /><br />
-                        {"Selamatt bertambah usiaa sayangkuu. Semogaaa di umur kamu sekarang kamu makin dewasa, makin bahagia, makin disayang banyak orang, dan tentu aja makin sayang sama keluargaa dan akuu jugaa xixixi. Sayangku yang satu inii hebattt bangettt. Kamu udah lewatin banyak hal sampai bisa ada di titik sekarang. Mungkin orang lain nggak semuanya tau perjuangan kamu, tapi aku tau kamu sekuat itu. Dan aku bangga banget punya kamu."}
+
+                        {"I hope this new chapter of your life brings you closer to all your dreams. I hope you succeed in everything you work hard for, and whenever things get difficult, I hope you remember how strong and capable you are. Don’t ever doubt yourself, okay? You deserve to be proud of yourself and everything you’ve achieved so far. I’ll always be cheering for you and wishing the best for you. 🫶🏻"}
                         <br /><br />
-                        {"Do you know? God loves you so much, jadi jangan pernah ngerasa sendiri yaa. Kalau dunia lagi capekinn kamu, kalau pikiran lagi rame, inget masih ada aku yang selalu dukung kamu dan peduli sama kamu. I looovee yooouuu 🤍"}
+
+                        {"Thank you for all the memories, all the laughs, all the conversations, and all the little moments that have made my life happier. I hope we can continue making many more beautiful memories together. No matter how much time passes, I hope you’ll always remember that your birthday is a special day because it’s the day someone as amazing as you came into this world."}
                         <br /><br />
-                        {"Makasih yaa udah lahir ke dunia ini, makasih udah tumbuh jadi orang sebaik kamu, makasih udah bertahan di hari-hari yang nggak gampang, dan makasih juga udah hadir di hidup aku. Kamu tuh salah satu hal baik yang pernah aku temuin."}
-                        <br /><br />
-                        {"Di umur kamu yang baru ini, aku cuma mau doa yang baik-baik buat kamu. Semoga langkah kamu selalu dipermudah, rezeki kamu dilancarin, hati kamu selalu tenang, dan semua yang kamu pengenin bisa pelan-pelan tercapai. Tetap jadi kamu yang aku kenal yaa, yang baik, yang tulus, yang kadang nyebelin tapi selalu bikin kangen."}
-                        <br /><br />
-                        {"Happy birthday once again, my lovee. I'm really grateful to have youu. I hope this year becomes one of the happiest chapters of your life, and I hope I can keep being a part of it. I love you today, tomorrow, and every day after that. 🤍"}
+
+                        {"Once again, happy birthday, sayang ❤️ I hope you have the happiest birthday ever. May you always be surrounded by people who genuinely love and appreciate you, may your heart always be filled with happiness, and may all your wishes slowly become reality. Enjoy your day, smile a lot, eat your favourite food, and most importantly, remember that you are very, very special to me. Happy birthday, my girl. ❤️🎂🥳"}
                       </p>
-                                            
+
                       {/* Postmark stamp */}
                       <div className="absolute bottom-4 right-4 flex items-center select-none pointer-events-none opacity-85">
-                        <svg className="w-[50px] h-[30px] text-[#4E3D3A] opacity-60 mr-1" fill="none" stroke="currentColor" strokeWidth="0.8">
+                        <svg className="w-[50px] h-[30px] text-[#EAD5C3]/40 opacity-60 mr-1" fill="none" stroke="currentColor" strokeWidth="0.8">
                           <path d="M 0 5 Q 12 1, 25 5 T 50 5" />
                           <path d="M 0 13 Q 12 9, 25 13 T 50 13" />
                           <path d="M 0 21 Q 12 17, 25 21 T 50 21" />
                         </svg>
-                        
-                        <div className="relative w-12 h-12 rounded-full border border-[#4E3D3A] flex items-center justify-center">
-                          <div className="w-[42px] h-[42px] rounded-full border border-[#4E3D3A]/70 flex items-center justify-center">
-                            <svg className="w-4 h-4 text-[#4E3D3A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+
+                        <div className="relative w-12 h-12 rounded-full border border-[#EAD5C3]/40 flex items-center justify-center">
+                          <div className="w-[42px] h-[42px] rounded-full border border-[#EAD5C3]/20 flex items-center justify-center">
+                            <svg className="w-4 h-4 text-[#EAD5C3]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
                               <path d="M 12 12 C 7 7, 3 9, 3 13 C 3 17, 8 15, 12 12 Z" />
                               <path d="M 12 12 C 17 7, 21 9, 21 13 C 21 17, 16 15, 12 12 Z" />
                               <ellipse cx="12" cy="12" rx="2" ry="2" fill="currentColor" />
@@ -1672,8 +1843,46 @@ export default function Home() {
                   </div>
                 </div>
 
-              </div>
+                {/* Right Side: Two Photo Strips (Fade and slide in after envelope is opened) */}
+                <div className={`flex gap-6 sm:gap-8 items-center justify-center transition-all duration-1000 ease-out ${isEnvelopeOpened ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95 pointer-events-none"}`} style={{ transitionDelay: isEnvelopeOpened ? "300ms" : "0ms" }}>
 
+                  {/* Delicate Hanging Strings */}
+                  <div className="absolute -top-40 bottom-0 left-0 right-0 flex justify-around pointer-events-none opacity-20 z-0">
+                    <div className="w-[1px] bg-gradient-to-b from-[#EAD5C3]/0 via-[#EAD5C3] to-[#EAD5C3]/0 h-full" />
+                    <div className="w-[1px] bg-gradient-to-b from-[#EAD5C3]/0 via-[#EAD5C3] to-[#EAD5C3]/0 h-full" />
+                  </div>
+
+                  {/* Strip 1: Cream filmstrip */}
+                  <div className="animate-sway-slow hover:scale-105 hover:rotate-0 transition-transform duration-300">
+                    <PhotoStrip
+                      photos={[
+                        "assets/img1.jpeg",
+                        "assets/img2.jpeg",
+                        "assets/img3.jpeg"
+                      ]}
+                      bgStyle={{ backgroundColor: "#1A1515", border: "5px solid #2C2224" }}
+                    />
+                  </div>
+
+                  {/* Strip 2: Pink patterned filmstrip */}
+                  <div className="animate-sway-fast hover:scale-105 hover:rotate-0 transition-transform duration-300">
+                    <PhotoStrip
+                      photos={[
+                        "assets/img4.jpeg",
+                        "assets/img5.jpeg",
+                        "assets/img6.jpeg"
+                      ]}
+                      bgStyle={{
+                        backgroundColor: "#201618",
+                        backgroundImage: "radial-gradient(#4A3035 0.5px, transparent 0.5px)",
+                        backgroundSize: "6px 6px",
+                        border: "5px solid #2C2022"
+                      }}
+                    />
+                  </div>
+                </div>
+
+              </div>
 
               {/* Home Navigation button at the bottom center */}
               <button
