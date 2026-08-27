@@ -407,6 +407,7 @@ export default function Home() {
 
   // Smooth tab-switch: flash veil in → swap tab → fade veil out
   const switchTab = (id: string) => {
+    ensureFullscreen();
     if (id === activeTab) return;
     setTabTransitioning(true);
     setTimeout(() => {
@@ -435,6 +436,37 @@ export default function Home() {
   const [activePhotoFilter, setActivePhotoFilter] = useState<string>("all");
   const [likedPhotos, setLikedPhotos] = useState<Record<number, boolean>>({});
   const [lightboxHearts, setLightboxHearts] = useState<{ id: number; x: number; y: number; emoji: string; size: number }[]>([]);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch((err) => {
+        console.warn("Fullscreen request error:", err);
+      });
+    } else {
+      document.exitFullscreen?.().catch((err) => {
+        console.warn("Exit fullscreen error:", err);
+      });
+    }
+  };
+
+  const ensureFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    }
+  };
 
   const spawnAboutYouHeart = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -774,7 +806,16 @@ export default function Home() {
       )}
 
       {/* Top Header / Navigation */}
-      <header className="w-full flex flex-col md:flex-row justify-end items-center gap-2 md:gap-4 z-40">
+      <header className="w-full flex flex-row justify-between md:justify-end items-center gap-2 md:gap-4 z-40">
+        {/* Fullscreen Toggle Button */}
+        <button
+          onClick={toggleFullscreen}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#EAD5C3]/20 bg-[#1A1A1A]/60 backdrop-blur-sm text-xs font-serif text-[#EAD5C3]/80 hover:text-[#EAD5C3] hover:border-[#EAD5C3]/50 transition-all duration-300 cursor-pointer shadow-sm md:mr-auto"
+          title={isFullscreen ? "Keluar dari Fullscreen" : "Layar Penuh (Full Screen)"}
+        >
+          <span>{isFullscreen ? "🗗" : "⛶"}</span>
+          <span className="hidden sm:inline">{isFullscreen ? "Exit Fullscreen" : "Full Screen"}</span>
+        </button>
 
         {/* Elegant sentence-based navigation */}
         <nav className="flex flex-wrap justify-center gap-x-3 sm:gap-x-5 md:gap-x-6 gap-y-1.5 text-xs sm:text-sm md:text-base font-sans tracking-wide">
