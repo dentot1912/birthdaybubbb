@@ -19,7 +19,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Happy Birthday Maeratul Helmiah",
+  title: "Happy Birthday Sayangg",
   description: "A special surprise prepared just for you!",
 };
 
